@@ -148,7 +148,15 @@ namespace SportStore
             bool canContinue = true;
 
             Console.Clear();
-            Console.WriteLine("What type of ball do you want to add? Football - 0, Tennis - 1");
+            menuBuilder.Clear();
+            menuBuilder.AppendLine("What type of ball do you want to add ?");
+            menuBuilder.Append("0 - ");
+            menuBuilder.AppendLine("Football");
+            menuBuilder.Append("1 - ");
+            menuBuilder.AppendLine("Tennis");
+            Console.WriteLine(menuBuilder);
+
+            Console.WriteLine("Enter:");
             string ans = Console.ReadLine();
 
             switch (ans)
@@ -183,6 +191,7 @@ namespace SportStore
             menuBuilder.AppendLine(Football.TypeGame.BeachFotball.ToString());
             Console.WriteLine(menuBuilder);
 
+            Console.WriteLine("Enter:");
             string ans = Console.ReadLine();
             Console.Clear();
             switch (ans)
@@ -221,7 +230,9 @@ namespace SportStore
 
         private void AddTennisBall(string name, float price, float diameter)
         {
+            bool canContinue = true;
             Console.Clear();
+            menuBuilder.Clear();
             menuBuilder.AppendLine("Type of court");
             menuBuilder.Append("0 - ");
             menuBuilder.AppendLine(TennisBall.TypeCourt.Ground.ToString());
@@ -229,19 +240,36 @@ namespace SportStore
             menuBuilder.AppendLine(TennisBall.TypeCourt.Plant.ToString());
             Console.WriteLine(menuBuilder);
 
+            Console.WriteLine("Enter:");
             string ans = Console.ReadLine();
             switch (ans)
             {
-                case "0": eqCollection.Add(new TennisBall(name, price, diameter, TennisBall.TypeCourt.Ground)); break;
-                case "1": eqCollection.Add(new TennisBall(name, price, diameter, TennisBall.TypeCourt.Plant)); break;
+                case "0":
+                    {
+                        eqCollection.Add(new TennisBall(name, price, diameter, TennisBall.TypeCourt.Ground));
+                        Console.WriteLine("The ball was added successfully!");
+                        break;
+                    }
+                case "1":
+                    {
+                        eqCollection.Add(new TennisBall(name, price, diameter, TennisBall.TypeCourt.Plant));
+                        Console.WriteLine("The ball was added successfully!");
+                        break;
+                    }
                 default:
                     {
                         if (RepeatEnter())
                             AddTennisBall(name, price, diameter);
+                        else
+                            canContinue = false;
+
                         break;
                     }
 
             }
+
+            if (canContinue)
+                BackToMainMenu();
         }
         #endregion
 
