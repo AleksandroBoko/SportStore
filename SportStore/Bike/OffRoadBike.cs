@@ -17,7 +17,7 @@ namespace SportStore.Bike
 
         public override string GetInfo()
         {
-            return base.GetInfo() + $"Number of Damper:{CountDamper}";
+            return base.GetInfo() + $"Number of Damper:{CountDamper};";
         }
     }
 }

@@ -20,7 +20,7 @@ namespace SportStore
 
         public virtual string GetInfo()
         {
-            return $"Name:{Name}; Price{Price}; ";
+            return $"Name:{Name}; Price:{Price}; ";
         } 
 
         public string GeTypeInfo()

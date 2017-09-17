@@ -24,7 +24,7 @@ namespace SportStore.Boat
 
         public override string GetInfo()
         {
-            return base.GetInfo() + $"Type of paddle:{Paddle.ToString()}";
+            return base.GetInfo() + $"Type of paddle:{Paddle.ToString()};";
         }
     }
 }

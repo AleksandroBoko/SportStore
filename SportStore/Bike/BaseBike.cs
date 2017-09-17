@@ -17,7 +17,7 @@ namespace SportStore.Bike
 
         public override string GetInfo()
         {
-            return base.GetInfo() + $"Weigth:{Weight}";
+            return base.GetInfo() + $"Weigth:{Weight}; ";
         }
     }
 }

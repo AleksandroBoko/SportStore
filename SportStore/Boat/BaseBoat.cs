@@ -17,7 +17,7 @@ namespace SportStore.Boat
 
         public override string GetInfo()
         {
-            return base.GetInfo() + $"Number of seats:{CountSeats}, ";
+            return base.GetInfo() + $"Number of seats:{CountSeats}; ";
         }
     }
 }

@@ -18,7 +18,7 @@ namespace SportStore.Boat
 
         public override string GetInfo()
         {
-            return base.GetInfo() + $"Power:{MotorPower}";
+            return base.GetInfo() + $"Power:{MotorPower};";
         }
     }
 }

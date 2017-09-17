@@ -24,7 +24,7 @@ namespace SportStore.Ball
 
         public override string GetInfo()
         {
-            return base.GetInfo() + $"Type of game:{Game.ToString()}";
+            return base.GetInfo() + $"Type of game:{Game.ToString()};";
         }
 
     }

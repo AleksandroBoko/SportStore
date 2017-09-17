@@ -17,7 +17,7 @@ namespace SportStore.Bike
 
         public override string GetInfo()
         {
-            return base.GetInfo() + $"Trunk:{HasTrunk}";
+            return base.GetInfo() + $"Trunk:{HasTrunk};";
         }
 
     }

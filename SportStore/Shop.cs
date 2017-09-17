@@ -242,6 +242,7 @@ namespace SportStore
 
             Console.WriteLine("Enter:");
             string ans = Console.ReadLine();
+            Console.Clear();
             switch (ans)
             {
                 case "0":
@@ -278,13 +279,49 @@ namespace SportStore
         {
             string name = "";
             float price = 0.0f;
-            SetBaseInfo(out name, out price);
+            float weight = 0.0f;
+
+            if (!SetBaseInfo(out name, out price))
+                return;
+
+            if (!SetWeightBike(out weight))
+                return;
+
+            if (!SetTypeBike(name, price, weight))
+                return;
+        }
+
+        private bool SetWeightBike(out float weight)
+        {
+            bool canContinue = true;
 
             Console.WriteLine("Set weight of the bike:");
-            float weight = float.Parse(Console.ReadLine());
+            bool result = float.TryParse(Console.ReadLine(), out weight);
+            if (!result)
+            {
+                if (RepeatEnter(1))
+                    SetWeightBike(out weight);
+                else
+                    canContinue = false;
+            }
+
+            return canContinue;
+        }
+
+        private bool SetTypeBike(string name, float price, float weight)
+        {
+            bool canContinue = true;
 
             Console.Clear();
-            Console.WriteLine("What type of bike do you want to add? City - 0, Offroad - 1");
+            menuBuilder.Clear();
+            menuBuilder.AppendLine("What type of bike do you want to add?");
+            menuBuilder.Append("0 - ");
+            menuBuilder.AppendLine("City");
+            menuBuilder.Append("1 - ");
+            menuBuilder.AppendLine("Offroad");
+            Console.WriteLine(menuBuilder);
+
+            Console.WriteLine("Enter:");
             string ans = Console.ReadLine();
 
             switch (ans)
@@ -294,34 +331,52 @@ namespace SportStore
                 default:
                     {
                         if (RepeatEnter())
-                            AddBike();
+                            SetTypeBall(name, price, weight);
+                        else
+                            canContinue = false;
+
                         break;
-                    }
+                    };
             }
+
+            return canContinue;
         }
 
         private void AddCityBike(string name, float price, float weight)
         {
+            bool canContinue = true;
             Console.Clear();
+
             Console.WriteLine("Bike has a trunk: 0 - Yes, 1 - No");
-            bool moveToMainMenu = true;
             string ans = Console.ReadLine();
+
+            Console.Clear();
             switch (ans)
             {
-                case "0": eqCollection.Add(new CityBike(name, price, weight, true)); break;
-                case "1": eqCollection.Add(new CityBike(name, price, weight, false)); break;
+                case "0":
+                    {
+                        eqCollection.Add(new CityBike(name, price, weight, true));
+                        Console.WriteLine("The bike was added successfully!");
+                        break;
+                    }
+                case "1":
+                    {
+                        eqCollection.Add(new CityBike(name, price, weight, false));
+                        Console.WriteLine("The bike was added successfully!");
+                        break;
+                    }
                 default:
                     {
                         if (RepeatEnter())
                             AddCityBike(name, price, weight);
                         else
-                            moveToMainMenu = false;
+                            canContinue = false;
 
                         break;
                     }
             }
 
-            if (moveToMainMenu)
+            if (canContinue)
                 BackToMainMenu();
         }
 
@@ -330,11 +385,21 @@ namespace SportStore
             Console.Clear();
             Console.WriteLine("Set a number of damper:");
 
-            // TODO: Добавить проверку на введенное значение
-            int ans = int.Parse(Console.ReadLine());
-            eqCollection.Add(new OffRoadBike(name, price, weight, ans));
+            int ans;
+            bool result = int.TryParse(Console.ReadLine(), out ans);
+            Console.Clear();
+            if (result)
+            {
+                eqCollection.Add(new OffRoadBike(name, price, weight, ans));
+                Console.WriteLine("The bike was added successfully!");
+                BackToMainMenu();
 
-            BackToMainMenu();
+            }
+            else
+            {
+                if (RepeatEnter(1))
+                    AddOffroadBike(name, price, weight);
+            }
         }
         #endregion
 
@@ -343,14 +408,39 @@ namespace SportStore
         {
             string name = "";
             float price = 0.0f;
-            SetBaseInfo(out name, out price);
+            int countSeats = 0;
 
+            if (!SetBaseInfo(out name, out price))
+                return;
+
+            if (!SetCountSeats(out countSeats))
+                return;
+
+            SetTypeBoat(name, price, countSeats);
+        }
+
+        private bool SetCountSeats(out int countSeats)
+        {
+            bool canContinue = true;
             Console.WriteLine("Set number of seats:");
-            // TODO: Add checking
-            int countSeats = int.Parse(Console.ReadLine());
+            bool result = int.TryParse(Console.ReadLine(), out countSeats);
+            if (!result)
+            {
+                if (RepeatEnter(1))
+                    SetCountSeats(out countSeats);
+                else
+                    canContinue = false;
 
+            }
+
+            return canContinue;
+        }
+
+        private bool SetTypeBoat(string name, float price, int countSeats)
+        {
+            bool canContinue = true;
             Console.Clear();
-            Console.WriteLine("What type of boat do you want to add? Canoe - 0, Offroad - 1");
+            Console.WriteLine("What type of boat do you want to add? Canoe - 0, Motor - 1");
             string ans = Console.ReadLine();
 
             switch (ans)
@@ -360,16 +450,21 @@ namespace SportStore
                 default:
                     {
                         if (RepeatEnter())
-                            AddBoat();
+                            SetTypeBoat(name, price, countSeats);
+                        else
+                            canContinue = false;
+
                         break;
                     }
             }
+
+            return canContinue;
         }
 
         private void AddCanoeBoat(string name, float price, int seats)
         {
+            bool canContinue = true;
             Console.Clear();
-            bool MoveToMainMenu = true;
             menuBuilder.Clear();
             menuBuilder.AppendLine("Type of paddle:");
             menuBuilder.Append("0 - ");
@@ -382,36 +477,62 @@ namespace SportStore
 
             Console.WriteLine("Enter:");
             string ans = Console.ReadLine();
+            Console.Clear();
             switch (ans)
             {
-                case "0": eqCollection.Add(new CanoeBoat(name, price, seats, CanoeBoat.TypePaddle.Long)); break;
-                case "1": eqCollection.Add(new CanoeBoat(name, price, seats, CanoeBoat.TypePaddle.Middle)); break;
-                case "2": eqCollection.Add(new CanoeBoat(name, price, seats, CanoeBoat.TypePaddle.Short)); break;
+                case "0":
+                    {
+                        eqCollection.Add(new CanoeBoat(name, price, seats, CanoeBoat.TypePaddle.Long));
+                        Console.WriteLine("The boat was added successfully!");
+                        break;
+                    }
+                case "1":
+                    {
+                        eqCollection.Add(new CanoeBoat(name, price, seats, CanoeBoat.TypePaddle.Middle));
+                        Console.WriteLine("The boat was added successfully!");
+                        break;
+                    }
+                case "2":
+                    {
+                        eqCollection.Add(new CanoeBoat(name, price, seats, CanoeBoat.TypePaddle.Short));
+                        Console.WriteLine("The boat was added successfully!");
+                        break;
+                    }
                 default:
                     {
                         if (RepeatEnter())
                             AddCanoeBoat(name, price, seats);
                         else
-                            MoveToMainMenu = false;
+                            canContinue = false;
 
                         break;
                     }
             }
 
-            if (MoveToMainMenu)
+            if (canContinue)
                 BackToMainMenu();
         }
 
-        private void AddMotorBoat(string name, float price, int seats)
+        private void AddMotorBoat(string name, float price, int countSeats)
         {
+            float power = 0.0f;
+
             Console.Clear();
             Console.WriteLine("Power of motor:");
-            //TODO: Add check
-            float power = float.Parse(Console.ReadLine());
-
-            eqCollection.Add(new MotorBoat(name, price, seats, power));
-
-            BackToMainMenu();
+            
+            bool result = float.TryParse(Console.ReadLine(), out power);
+            Console.Clear();
+            if (result)
+            {
+                eqCollection.Add(new MotorBoat(name, price, countSeats, power));
+                Console.WriteLine("The boat was added successfully!");
+                BackToMainMenu();
+            }
+            else
+            {
+                if (RepeatEnter(1))
+                    AddMotorBoat(name, price, countSeats);
+            }
         }
         #endregion
         #endregion
@@ -448,10 +569,12 @@ namespace SportStore
 
         private void RemoveByIndex()
         {
-            Console.Clear();
-            Console.WriteLine("Number of equipment:");
             bool needMoveToMainMenu = true;
             int index;
+
+            Console.Clear();
+            Console.WriteLine("Number of equipment:");
+            
             bool result = int.TryParse(Console.ReadLine(), out index);
             if (result)
             {
@@ -528,10 +651,11 @@ namespace SportStore
             }
             else
             {
+                Console.WriteLine("The whole list of the equipment:");
                 for (int i = 0; i < eqCollection.Length; i++)
                 {
                     BaseEquipment beq = eqCollection.GetEquipmentByIndex(i);
-                    Console.WriteLine(beq.GetInfo());
+                    Console.WriteLine((i+1).ToString() + " " + beq.GetInfo());
                 }
             }
 
@@ -551,6 +675,7 @@ namespace SportStore
             }
 
             int countItemsConcreteType = 0;
+            StringBuilder sb = new StringBuilder();
             for (int i = 0; i < eqCollection.Length; i++)
             {
 
@@ -560,10 +685,7 @@ namespace SportStore
                         {
                             BaseBall beq = eqCollection.GetEquipmentByIndex(i) as BaseBall;
                             if (beq != null)
-                            {
-                                Console.WriteLine(beq.GetInfo());
-                                countItemsConcreteType++;
-                            }
+                                SetEquipmentInfoForType(ref sb, ref countItemsConcreteType, beq.GetInfo());
 
                             break;
                         }
@@ -571,10 +693,7 @@ namespace SportStore
                         {
                             BaseBike beq = eqCollection.GetEquipmentByIndex(i) as BaseBike;
                             if (beq != null)
-                            {
-                                Console.WriteLine(beq.GetInfo());
-                                countItemsConcreteType++;
-                            }
+                                SetEquipmentInfoForType(ref sb, ref countItemsConcreteType, beq.GetInfo());
 
                             break;
                         }
@@ -582,19 +701,26 @@ namespace SportStore
                         {
                             BaseBoat beq = eqCollection.GetEquipmentByIndex(i) as BaseBoat;
                             if (beq != null)
-                            {
-                                Console.WriteLine(beq.GetInfo());
-                                countItemsConcreteType++;
-                            }
+                                SetEquipmentInfoForType(ref sb, ref countItemsConcreteType, beq.GetInfo());
 
                             break;
                         }
                 }
             }
 
+            
             if (countItemsConcreteType == 0)
-                Console.WriteLine("The equipments of concrete type were not found!");
+                Console.WriteLine("The equipments of the concrete type were not found!");
+            else
+                Console.WriteLine(sb);
+        }
 
+        private void SetEquipmentInfoForType(ref StringBuilder sb, ref int count, string info)
+        {
+            sb.Append(count + 1);
+            sb.Append(" ");
+            sb.AppendLine(info);            
+            count++;
         }
 
         private void ShowConcreteType()
@@ -659,10 +785,11 @@ namespace SportStore
             Console.Clear();
             Console.WriteLine("Name:");
             string ans = Console.ReadLine();
-            BaseEquipment eq = eqCollection.GetEquipmentByName(ans);
 
+            Console.Clear();
+            BaseEquipment eq = eqCollection.GetEquipmentByName(ans);
             if (eq != null)
-                eq.GetInfo();
+                Console.WriteLine(eq.GetInfo());
             else
                 Console.WriteLine("The equipment wasn't found!");
 
@@ -678,13 +805,14 @@ namespace SportStore
             Console.WriteLine("Number:");
             string ans = Console.ReadLine();
 
+            Console.Clear();
             bool result = int.TryParse(ans, out index);
             if (result)
             {
-                eq = eqCollection.GetEquipmentByIndex(index);
+                eq = eqCollection.GetEquipmentByIndex(index-1);
 
                 if (eq != null)
-                    eq.GetInfo();
+                    Console.WriteLine(eq.GetInfo());
                 else
                     Console.WriteLine("The equipment wasn't found!");
 
