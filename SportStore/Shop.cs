@@ -123,8 +123,7 @@ namespace SportStore
             if (!SetBallDiameter(out diameter))
                 return;
 
-            if (!SetTypeBall(name, price, diameter))
-                return;
+            SetTypeBall(name, price, diameter);
         }
 
         private bool SetBallDiameter(out float val)
@@ -143,10 +142,8 @@ namespace SportStore
             return canContinue;
         }
 
-        private bool SetTypeBall(string name, float price, float diameter)
+        private void SetTypeBall(string name, float price, float diameter)
         {
-            bool canContinue = true;
-
             Console.Clear();
             menuBuilder.Clear();
             menuBuilder.AppendLine("What type of ball do you want to add ?");
@@ -167,19 +164,14 @@ namespace SportStore
                     {
                         if (RepeatEnter())
                             SetTypeBall(name, price, diameter);
-                        else
-                            canContinue = false;
 
                         break;
                     };
             }
-
-            return canContinue;
         }
 
         private void AddFootball(string name, float price, float diameter)
         {
-            bool canContinue = true;
             Console.Clear();
             menuBuilder.Clear();
             menuBuilder.AppendLine("Set a type of game:");
@@ -193,44 +185,24 @@ namespace SportStore
 
             Console.WriteLine("Enter:");
             string ans = Console.ReadLine();
-            Console.Clear();
+
             switch (ans)
             {
-                case "0":
-                    {
-                        eqCollection.Add(new Football(name, price, diameter, Football.TypeGame.MiniFootball));
-                        Console.WriteLine("The ball was added successfully!");
-                        break;
-                    }
-                case "1":
-                    {
-                        eqCollection.Add(new Football(name, price, diameter, Football.TypeGame.Soccer));
-                        Console.WriteLine("The ball was added successfully!");
-                        break;
-                    }
-                case "2":
-                    {
-                        eqCollection.Add(new Football(name, price, diameter, Football.TypeGame.BeachFotball));
-                        Console.WriteLine("The ball was added successfully!");
-                        break;
-                    }
+                case "0": AddConcreteBall(name, price, diameter, Football.TypeGame.BeachFotball); break;
+                case "1": AddConcreteBall(name, price, diameter, Football.TypeGame.Soccer); break;
+                case "2": AddConcreteBall(name, price, diameter, Football.TypeGame.BeachFotball); break;
                 default:
                     {
                         if (RepeatEnter())
                             AddFootball(name, price, diameter);
-                        else
-                            canContinue = false;
+
                         break;
                     }
             }
-
-            if (canContinue)
-                BackToMainMenu();
         }
 
         private void AddTennisBall(string name, float price, float diameter)
         {
-            bool canContinue = true;
             Console.Clear();
             menuBuilder.Clear();
             menuBuilder.AppendLine("Type of court");
@@ -242,35 +214,34 @@ namespace SportStore
 
             Console.WriteLine("Enter:");
             string ans = Console.ReadLine();
-            Console.Clear();
             switch (ans)
             {
-                case "0":
-                    {
-                        eqCollection.Add(new TennisBall(name, price, diameter, TennisBall.TypeCourt.Ground));
-                        Console.WriteLine("The ball was added successfully!");
-                        break;
-                    }
-                case "1":
-                    {
-                        eqCollection.Add(new TennisBall(name, price, diameter, TennisBall.TypeCourt.Plant));
-                        Console.WriteLine("The ball was added successfully!");
-                        break;
-                    }
+                case "0": AddConcreteBall(name, price, diameter, TennisBall.TypeCourt.Ground); break;
+                case "1": AddConcreteBall(name, price, diameter, TennisBall.TypeCourt.Plant); break;
                 default:
                     {
                         if (RepeatEnter())
                             AddTennisBall(name, price, diameter);
-                        else
-                            canContinue = false;
 
                         break;
                     }
-
             }
+        }
 
-            if (canContinue)
-                BackToMainMenu();
+        private void AddConcreteBall(string name, float price, float diameter, Football.TypeGame tg)
+        {
+            Console.Clear();
+            eqCollection.Add(new Football(name, price, diameter, tg));
+            Console.WriteLine("The ball was added successfully!");
+            BackToMainMenu();
+        }
+
+        private void AddConcreteBall(string name, float price, float diameter, TennisBall.TypeCourt tc)
+        {
+            Console.Clear();
+            eqCollection.Add(new TennisBall(name, price, diameter, tc));
+            Console.WriteLine("The ball was added successfully!");
+            BackToMainMenu();
         }
         #endregion
 
@@ -287,8 +258,7 @@ namespace SportStore
             if (!SetWeightBike(out weight))
                 return;
 
-            if (!SetTypeBike(name, price, weight))
-                return;
+            SetTypeBike(name, price, weight);
         }
 
         private bool SetWeightBike(out float weight)
@@ -308,10 +278,8 @@ namespace SportStore
             return canContinue;
         }
 
-        private bool SetTypeBike(string name, float price, float weight)
+        private void SetTypeBike(string name, float price, float weight)
         {
-            bool canContinue = true;
-
             Console.Clear();
             menuBuilder.Clear();
             menuBuilder.AppendLine("What type of bike do you want to add?");
@@ -332,52 +300,38 @@ namespace SportStore
                     {
                         if (RepeatEnter())
                             SetTypeBall(name, price, weight);
-                        else
-                            canContinue = false;
 
                         break;
                     };
             }
-
-            return canContinue;
         }
 
         private void AddCityBike(string name, float price, float weight)
         {
-            bool canContinue = true;
             Console.Clear();
-
             Console.WriteLine("Bike has a trunk: 0 - Yes, 1 - No");
-            string ans = Console.ReadLine();
 
-            Console.Clear();
+            string ans = Console.ReadLine();
             switch (ans)
             {
-                case "0":
-                    {
-                        eqCollection.Add(new CityBike(name, price, weight, true));
-                        Console.WriteLine("The bike was added successfully!");
-                        break;
-                    }
-                case "1":
-                    {
-                        eqCollection.Add(new CityBike(name, price, weight, false));
-                        Console.WriteLine("The bike was added successfully!");
-                        break;
-                    }
+                case "0": AddConcreteCityBike(name, price, weight, true); break;
+                case "1": AddConcreteCityBike(name, price, weight, false); break;
                 default:
                     {
                         if (RepeatEnter())
                             AddCityBike(name, price, weight);
-                        else
-                            canContinue = false;
 
                         break;
                     }
             }
+        }
 
-            if (canContinue)
-                BackToMainMenu();
+        private void AddConcreteCityBike(string name, float price, float weight, bool hasTrunk)
+        {
+            Console.Clear();
+            eqCollection.Add(new CityBike(name, price, weight, true));
+            Console.WriteLine("The bike was added successfully!");
+            BackToMainMenu();
         }
 
         private void AddOffroadBike(string name, float price, float weight)
@@ -436,9 +390,8 @@ namespace SportStore
             return canContinue;
         }
 
-        private bool SetTypeBoat(string name, float price, int countSeats)
+        private void SetTypeBoat(string name, float price, int countSeats)
         {
-            bool canContinue = true;
             Console.Clear();
             Console.WriteLine("What type of boat do you want to add? Canoe - 0, Motor - 1");
             string ans = Console.ReadLine();
@@ -451,19 +404,14 @@ namespace SportStore
                     {
                         if (RepeatEnter())
                             SetTypeBoat(name, price, countSeats);
-                        else
-                            canContinue = false;
 
                         break;
                     }
             }
-
-            return canContinue;
         }
 
         private void AddCanoeBoat(string name, float price, int seats)
         {
-            bool canContinue = true;
             Console.Clear();
             menuBuilder.Clear();
             menuBuilder.AppendLine("Type of paddle:");
@@ -477,40 +425,27 @@ namespace SportStore
 
             Console.WriteLine("Enter:");
             string ans = Console.ReadLine();
-            Console.Clear();
             switch (ans)
             {
-                case "0":
-                    {
-                        eqCollection.Add(new CanoeBoat(name, price, seats, CanoeBoat.TypePaddle.Long));
-                        Console.WriteLine("The boat was added successfully!");
-                        break;
-                    }
-                case "1":
-                    {
-                        eqCollection.Add(new CanoeBoat(name, price, seats, CanoeBoat.TypePaddle.Middle));
-                        Console.WriteLine("The boat was added successfully!");
-                        break;
-                    }
-                case "2":
-                    {
-                        eqCollection.Add(new CanoeBoat(name, price, seats, CanoeBoat.TypePaddle.Short));
-                        Console.WriteLine("The boat was added successfully!");
-                        break;
-                    }
+                case "0": AddConcreteCanoeBoat(name, price, seats, CanoeBoat.TypePaddle.Long); break;
+                case "1": AddConcreteCanoeBoat(name, price, seats, CanoeBoat.TypePaddle.Middle); break;
+                case "2": AddConcreteCanoeBoat(name, price, seats, CanoeBoat.TypePaddle.Short); break;
                 default:
                     {
                         if (RepeatEnter())
                             AddCanoeBoat(name, price, seats);
-                        else
-                            canContinue = false;
 
                         break;
                     }
             }
+        }
 
-            if (canContinue)
-                BackToMainMenu();
+        private void AddConcreteCanoeBoat(string name, float price, int seats, CanoeBoat.TypePaddle tp)
+        {
+            Console.Clear();
+            eqCollection.Add(new CanoeBoat(name, price, seats, tp));
+            Console.WriteLine("The boat was added successfully!");
+            BackToMainMenu();
         }
 
         private void AddMotorBoat(string name, float price, int countSeats)
@@ -519,7 +454,7 @@ namespace SportStore
 
             Console.Clear();
             Console.WriteLine("Power of motor:");
-            
+
             bool result = float.TryParse(Console.ReadLine(), out power);
             Console.Clear();
             if (result)
@@ -574,7 +509,7 @@ namespace SportStore
 
             Console.Clear();
             Console.WriteLine("Number of equipment:");
-            
+
             bool result = int.TryParse(Console.ReadLine(), out index);
             if (result)
             {
@@ -624,6 +559,7 @@ namespace SportStore
             menuBuilder.AppendLine("3 - Main menu");
             Console.WriteLine(menuBuilder);
 
+            Console.WriteLine("Enter:");
             string ans = Console.ReadLine();
             switch (ans)
             {
@@ -655,7 +591,7 @@ namespace SportStore
                 for (int i = 0; i < eqCollection.Length; i++)
                 {
                     BaseEquipment beq = eqCollection.GetEquipmentByIndex(i);
-                    Console.WriteLine((i+1).ToString() + " " + beq.GetInfo());
+                    Console.WriteLine((i + 1).ToString() + " " + beq.GetInfo());
                 }
             }
 
@@ -673,6 +609,8 @@ namespace SportStore
                 Console.WriteLine("The shop is empty!");
                 return;
             }
+
+            Console.WriteLine("The list of the concrete type of the equipment:");
 
             int countItemsConcreteType = 0;
             StringBuilder sb = new StringBuilder();
@@ -708,7 +646,7 @@ namespace SportStore
                 }
             }
 
-            
+
             if (countItemsConcreteType == 0)
                 Console.WriteLine("The equipments of the concrete type were not found!");
             else
@@ -719,7 +657,7 @@ namespace SportStore
         {
             sb.Append(count + 1);
             sb.Append(" ");
-            sb.AppendLine(info);            
+            sb.AppendLine(info);
             count++;
         }
 
@@ -809,7 +747,7 @@ namespace SportStore
             bool result = int.TryParse(ans, out index);
             if (result)
             {
-                eq = eqCollection.GetEquipmentByIndex(index-1);
+                eq = eqCollection.GetEquipmentByIndex(index - 1);
 
                 if (eq != null)
                     Console.WriteLine(eq.GetInfo());
