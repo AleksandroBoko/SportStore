@@ -10,7 +10,7 @@ namespace SportStore
     {
         
         public string Name { get; protected set; }
-        protected float Price;
+        public float Price { get; protected set; }
 
         public BaseEquipment(string name, float price)
         {

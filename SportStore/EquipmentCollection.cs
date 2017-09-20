@@ -21,43 +21,53 @@ namespace SportStore
         }
 
 
-        /// <summary>
-        /// Adding an equipment to the end of the collection
-        /// </summary>
-        /// <param name="eq">An equipment with type BaseEquipment</param>
+        /// <summary>Adding an equipment to the end of the collection</summary>        
         public void Add(BaseEquipment eq)
         {
             IncreaseSize();
             equipments[equipments.Length - 1] = eq;
         }
 
+        /// <summary>Removing all equipments from the collection</summary>
         public void RemoveAll()
         {
             equipments = new BaseEquipment[] { };
         }
 
-        public void RemoveByName(string val)
+        /// <summary>Removing equipment from the collection by the name</summary>
+        public bool RemoveByName(string val)
         {
-           if(IsExistEquipment(val))
+            int LengthBeforeRemoving = Length;
+
+            if (IsExistEquipment(val))
             {
                 if (Length == 1)
                     RemoveAll();
                 else
                     equipments = CopyValuesForDecrease(val);
-            }   
+            }
+
+            return LengthBeforeRemoving != Length;
         }
 
-        public void RemoveByIndex(int index)
+        /// <summary>Removing equipment from the collection by the index</summary>
+        public bool RemoveByIndex(int index)
         {
-            if(IsExistEquipment(index))
+            int LengthBeforeRemoving = Length;
+
+            if (IsExistEquipment(index))
             {
                 if (Length == 1)
                     RemoveAll();
                 else
                     equipments = CopyValuesForDecrease(index);
             }
+
+
+            return LengthBeforeRemoving != Length;
         }
 
+        /// <summary>Getting equipment from the collection by the index</summary>
         public BaseEquipment GetEquipmentByIndex(int index)
         {
             if (Length == 0)
@@ -69,15 +79,16 @@ namespace SportStore
                 return equipments[index];
         }
 
+        /// <summary>Getting equipment from the collection by the name</summary>
         public BaseEquipment GetEquipmentByName(string name)
         {
             if (Length == 0)
                 return null;
 
-            BaseEquipment result = null;  
-            foreach(BaseEquipment eq in equipments)
+            BaseEquipment result = null;
+            foreach (BaseEquipment eq in equipments)
             {
-                if(eq.Name == name)
+                if (eq.Name == name)
                 {
                     result = eq;
                     break;
@@ -87,12 +98,13 @@ namespace SportStore
             return result;
         }
 
+        /// <summary>Checking equipment by the name</summary>
         private bool IsExistEquipment(string name)
         {
             bool result = false;
-            foreach(BaseEquipment eq in equipments)
+            foreach (BaseEquipment eq in equipments)
             {
-                if(eq.Name == name)
+                if (eq.Name == name)
                 {
                     result = true;
                     break;
@@ -102,6 +114,7 @@ namespace SportStore
             return result;
         }
 
+        /// <summary>Checking equipment by the index</summary>
         private bool IsExistEquipment(int index)
         {
             if (index < 0 || index > (Length - 1))
@@ -110,6 +123,7 @@ namespace SportStore
                 return true;
         }
 
+        /// <summary>Increase the size of the array</summary>
         private void IncreaseSize()
         {
             if (equipments == null)
@@ -118,10 +132,11 @@ namespace SportStore
                 equipments = CopyValuesForIncrease();
         }
 
+        /// <summary>Copy elements to increase the array</summary>
         private BaseEquipment[] CopyValuesForIncrease()
         {
             BaseEquipment[] result = new BaseEquipment[equipments.Length + 1];
-            for(int i=0; i < equipments.Length; i++)
+            for (int i = 0; i < equipments.Length; i++)
             {
                 result[i] = equipments[i];
             }
@@ -129,6 +144,7 @@ namespace SportStore
             return result;
         }
 
+        /// <summary>Copy elements to decrease the array usinng string variable 'name'</summary>
         private BaseEquipment[] CopyValuesForDecrease(string name)
         {
             BaseEquipment[] result = new BaseEquipment[equipments.Length - 1];
@@ -138,7 +154,7 @@ namespace SportStore
 
             for (int i = 0; i < equipments.Length; i++)
             {
-                if(equipments[i].Name == name && !found)
+                if (equipments[i].Name == name && !found)
                 {
                     found = true;
                     continue;
@@ -151,6 +167,7 @@ namespace SportStore
             return result;
         }
 
+        /// <summary>Copy elements to decrease the array usinng integer variable 'index'</summary>
         private BaseEquipment[] CopyValuesForDecrease(int index)
         {
             BaseEquipment[] result = new BaseEquipment[equipments.Length - 1];
@@ -168,6 +185,14 @@ namespace SportStore
             }
 
             return result;
+        }
+
+        public void SetElementByIndex(int index, BaseEquipment bq)
+        {
+            if(0 <= index && index < Length )
+            {
+                equipments[index] = bq;
+            }
         }
     }
 }

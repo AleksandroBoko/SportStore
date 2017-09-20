@@ -18,6 +18,12 @@ namespace SportStore
             Boat
         }
 
+        public enum TypeError
+        {
+            IncorrectCommand,
+            IncorrectInputValue
+        }
+
         private StringBuilder menuBuilder;
 
         private EquipmentCollection eqCollection;
@@ -60,6 +66,7 @@ namespace SportStore
         }
 
         #region Adding Equipment
+        /// <summary>The main method for adding all types of the equipments</summary>
         private void AddEquipment()
         {
             Console.Clear();
@@ -85,11 +92,13 @@ namespace SportStore
                     {
                         if (RepeatEnter())
                             AddEquipment();
+
                         break;
                     }
             }
         }
 
+        /// <summary>Set base characteristics</summary>
         private bool SetBaseInfo(out string name, out float price)
         {
             bool canContinue = true;
@@ -99,9 +108,13 @@ namespace SportStore
 
             Console.WriteLine("Price of the equipment:");
             bool result = float.TryParse(Console.ReadLine(), out price);
+
+            if (result)
+                result = price >= 0;
+
             if (!result)
             {
-                if (RepeatEnter(1))
+                if (RepeatEnter(TypeError.IncorrectInputValue))
                     SetBaseInfo(out name, out price);
                 else
                     canContinue = false;
@@ -111,6 +124,7 @@ namespace SportStore
         }
 
         #region Adding Ball
+        /// <summary>Adding equipments wich are Ball</summary>
         private void AddBall()
         {
             string name = "";
@@ -126,14 +140,19 @@ namespace SportStore
             SetTypeBall(name, price, diameter);
         }
 
+        /// <summary>Set diameter of the ball</summary>
         private bool SetBallDiameter(out float val)
         {
             bool canContinue = true;
             Console.WriteLine("Set diameter of the ball:");
             bool result = float.TryParse(Console.ReadLine(), out val);
+
+            if (result)
+                result = val >= 0;
+
             if (!result)
             {
-                if (RepeatEnter(1))
+                if (RepeatEnter(TypeError.IncorrectInputValue))
                     SetBallDiameter(out val);
                 else
                     canContinue = false;
@@ -142,6 +161,7 @@ namespace SportStore
             return canContinue;
         }
 
+        /// <summary>Set type of the ball</summary>
         private void SetTypeBall(string name, float price, float diameter)
         {
             Console.Clear();
@@ -170,6 +190,7 @@ namespace SportStore
             }
         }
 
+        /// <summary>Adding ball - football</summary>
         private void AddFootball(string name, float price, float diameter)
         {
             Console.Clear();
@@ -201,6 +222,7 @@ namespace SportStore
             }
         }
 
+        /// <summary>Adding ball - tennis</summary>
         private void AddTennisBall(string name, float price, float diameter)
         {
             Console.Clear();
@@ -228,6 +250,7 @@ namespace SportStore
             }
         }
 
+        /// <summary>Adding concrete ball - football</summary>
         private void AddConcreteBall(string name, float price, float diameter, Football.TypeGame tg)
         {
             Console.Clear();
@@ -236,6 +259,7 @@ namespace SportStore
             BackToMainMenu();
         }
 
+        /// <summary>Adding concrete ball - tennis</summary>
         private void AddConcreteBall(string name, float price, float diameter, TennisBall.TypeCourt tc)
         {
             Console.Clear();
@@ -246,6 +270,7 @@ namespace SportStore
         #endregion
 
         #region Adding Bike
+        /// <summary>Adding equipments wich are Bike</summary>
         private void AddBike()
         {
             string name = "";
@@ -261,15 +286,20 @@ namespace SportStore
             SetTypeBike(name, price, weight);
         }
 
+        /// <summary>Set bike's weight</summary>
         private bool SetWeightBike(out float weight)
         {
             bool canContinue = true;
 
             Console.WriteLine("Set weight of the bike:");
             bool result = float.TryParse(Console.ReadLine(), out weight);
+
+            if (result)
+                result = weight >= 0;
+
             if (!result)
             {
-                if (RepeatEnter(1))
+                if (RepeatEnter(TypeError.IncorrectInputValue))
                     SetWeightBike(out weight);
                 else
                     canContinue = false;
@@ -278,6 +308,7 @@ namespace SportStore
             return canContinue;
         }
 
+        /// <summary>Set type of the bike</summary>
         private void SetTypeBike(string name, float price, float weight)
         {
             Console.Clear();
@@ -306,6 +337,7 @@ namespace SportStore
             }
         }
 
+        /// <summary>Adding bike - citybike</summary>
         private void AddCityBike(string name, float price, float weight)
         {
             Console.Clear();
@@ -326,6 +358,7 @@ namespace SportStore
             }
         }
 
+        /// <summary>Adding concrete bike - citybike</summary>
         private void AddConcreteCityBike(string name, float price, float weight, bool hasTrunk)
         {
             Console.Clear();
@@ -334,6 +367,7 @@ namespace SportStore
             BackToMainMenu();
         }
 
+        /// <summary>Adding bike - offroad</summary>
         private void AddOffroadBike(string name, float price, float weight)
         {
             Console.Clear();
@@ -351,13 +385,14 @@ namespace SportStore
             }
             else
             {
-                if (RepeatEnter(1))
+                if (RepeatEnter(TypeError.IncorrectInputValue))
                     AddOffroadBike(name, price, weight);
             }
         }
         #endregion
 
         #region Adding Boat
+        /// <summary>Adding equipments wich are Boat</summary>
         private void AddBoat()
         {
             string name = "";
@@ -373,14 +408,19 @@ namespace SportStore
             SetTypeBoat(name, price, countSeats);
         }
 
+        /// <summary>Set boat's number of seats</summary>
         private bool SetCountSeats(out int countSeats)
         {
             bool canContinue = true;
             Console.WriteLine("Set number of seats:");
             bool result = int.TryParse(Console.ReadLine(), out countSeats);
+
+            if (result)
+                result = countSeats >= 0;
+
             if (!result)
             {
-                if (RepeatEnter(1))
+                if (RepeatEnter(TypeError.IncorrectInputValue))
                     SetCountSeats(out countSeats);
                 else
                     canContinue = false;
@@ -390,6 +430,7 @@ namespace SportStore
             return canContinue;
         }
 
+        /// <summary>Set type of the bike</summary>
         private void SetTypeBoat(string name, float price, int countSeats)
         {
             Console.Clear();
@@ -410,6 +451,7 @@ namespace SportStore
             }
         }
 
+        /// <summary>Adding boat - canoe</summary>
         private void AddCanoeBoat(string name, float price, int seats)
         {
             Console.Clear();
@@ -440,6 +482,7 @@ namespace SportStore
             }
         }
 
+        /// <summary>Adding concrete boat - canoe</summary>
         private void AddConcreteCanoeBoat(string name, float price, int seats, CanoeBoat.TypePaddle tp)
         {
             Console.Clear();
@@ -448,6 +491,7 @@ namespace SportStore
             BackToMainMenu();
         }
 
+        /// <summary>Adding boat - motorboat</summary>
         private void AddMotorBoat(string name, float price, int countSeats)
         {
             float power = 0.0f;
@@ -456,16 +500,20 @@ namespace SportStore
             Console.WriteLine("Power of motor:");
 
             bool result = float.TryParse(Console.ReadLine(), out power);
-            Console.Clear();
+
+            if (result)
+                result = power >= 0;
+
             if (result)
             {
+                Console.Clear();
                 eqCollection.Add(new MotorBoat(name, price, countSeats, power));
                 Console.WriteLine("The boat was added successfully!");
                 BackToMainMenu();
             }
             else
             {
-                if (RepeatEnter(1))
+                if (RepeatEnter(TypeError.IncorrectInputValue))
                     AddMotorBoat(name, price, countSeats);
             }
         }
@@ -485,6 +533,7 @@ namespace SportStore
             menuBuilder.AppendLine("3 - Main menu");
             Console.WriteLine(menuBuilder);
 
+            Console.WriteLine("Enter:");
             string ans = Console.ReadLine();
             switch (ans)
             {
@@ -496,6 +545,7 @@ namespace SportStore
                     {
                         if (RepeatEnter())
                             RemoveEquipment();
+
                         break;
                     }
             }
@@ -504,27 +554,27 @@ namespace SportStore
 
         private void RemoveByIndex()
         {
-            bool needMoveToMainMenu = true;
-            int index;
 
             Console.Clear();
             Console.WriteLine("Number of equipment:");
 
+            int index;
             bool result = int.TryParse(Console.ReadLine(), out index);
             if (result)
             {
-                eqCollection.RemoveByIndex(index);
+                Console.Clear();
+                if (eqCollection.RemoveByIndex(index))
+                    Console.WriteLine("The equipment was removed successfully!");
+                else
+                    Console.WriteLine("The equipment wasn't removed!");
+
+                BackToMainMenu();
             }
             else
             {
-                if (RepeatEnter(1))
+                if (RepeatEnter(TypeError.IncorrectInputValue))
                     RemoveByIndex();
-                else
-                    needMoveToMainMenu = false;
             }
-
-            if (needMoveToMainMenu)
-                BackToMainMenu();
         }
 
         private void RemoveByName()
@@ -533,30 +583,38 @@ namespace SportStore
             Console.WriteLine("Name of equipment:");
             string name = Console.ReadLine();
 
-            eqCollection.RemoveByName(name);
+            Console.Clear();
+            if (eqCollection.RemoveByName(name))
+                Console.WriteLine("The equipment was removed successfully!");
+            else
+                Console.WriteLine("The equipment wasn't removed!");
 
             BackToMainMenu();
         }
 
         private void RemoveAll()
         {
+            Console.Clear();
             eqCollection.RemoveAll();
+            Console.WriteLine("The equipment were removed successfully!");
 
             BackToMainMenu();
         }
         #endregion
 
         #region Showing Equipment
+        /// <summary>The main method for showing all equipments</summary>
         private void ShowEquipment()
         {
             Console.Clear();
             menuBuilder.Clear();
-            menuBuilder.AppendLine("You can see:");
+            menuBuilder.AppendLine("You can choose:");
             menuBuilder.AppendLine("0 - All equipment");
             menuBuilder.AppendLine("1 - Concrete type of equipment");
             menuBuilder.AppendLine("2 - Concrete equipment");
+            menuBuilder.AppendLine("3 - Sort equipments and view");  
             menuBuilder.AppendLine("-------------");
-            menuBuilder.AppendLine("3 - Main menu");
+            menuBuilder.AppendLine("4 - Main menu");
             Console.WriteLine(menuBuilder);
 
             Console.WriteLine("Enter:");
@@ -566,7 +624,8 @@ namespace SportStore
                 case "0": ShowAllEquipment(); break;
                 case "1": ShowConcreteType(); break;
                 case "2": ShowConcreteEquipment(); break;
-                case "3": ShowMainManu(); break;
+                case "3": ShowSortingEquipmentsByPrice(); break; 
+                case "4": ShowMainManu(); break;
                 default:
                     {
                         if (RepeatEnter())
@@ -577,6 +636,7 @@ namespace SportStore
             }
         }
 
+        /// <summary>Showing all equipments</summary>
         private void ShowAllEquipment()
         {
             Console.Clear();
@@ -588,16 +648,23 @@ namespace SportStore
             else
             {
                 Console.WriteLine("The whole list of the equipment:");
-                for (int i = 0; i < eqCollection.Length; i++)
-                {
-                    BaseEquipment beq = eqCollection.GetEquipmentByIndex(i);
-                    Console.WriteLine((i + 1).ToString() + " " + beq.GetInfo());
-                }
+                ShowWholeListEquipments();
             }
 
             BackToMainMenu();
         }
 
+        /// <summary>Showing all equipments with oreder numbers, without checks</summary>
+        private void ShowWholeListEquipments()
+        {
+            for (int i = 0; i < eqCollection.Length; i++)
+            {
+                BaseEquipment beq = eqCollection.GetEquipmentByIndex(i);
+                Console.WriteLine((i + 1).ToString() + " " + beq.GetInfo());
+            }
+        }
+
+        /// <summary>Showing some type of equipments</summary>
         private void ShowEquipmentByType(int eq)
         {
             if (eq < 0 || eq > 2)
@@ -653,6 +720,7 @@ namespace SportStore
                 Console.WriteLine(sb);
         }
 
+        /// <summary>Configuring view for concrete type of the equipments</summary>
         private void SetEquipmentInfoForType(ref StringBuilder sb, ref int count, string info)
         {
             sb.Append(count + 1);
@@ -661,6 +729,7 @@ namespace SportStore
             count++;
         }
 
+        /// <summary>Obtain the concrete type of the equipment</summary>
         private void ShowConcreteType()
         {
             Console.Clear();
@@ -689,6 +758,7 @@ namespace SportStore
             }
         }
 
+        /// <summary>Obtain concrete equipment by number or name</summary>
         private void ShowConcreteEquipment()
         {
             Console.Clear();
@@ -718,6 +788,7 @@ namespace SportStore
             }
         }
 
+        /// <summary>Showing concrete equipment by name</summary>
         private void ShowConcreteEquipmentByName()
         {
             Console.Clear();
@@ -734,6 +805,7 @@ namespace SportStore
             BackToMainMenu();
         }
 
+        /// <summary>Showing concrete equipment by index</summary>
         private void ShowConcreteEquipmentByIndex()
         {
             int index;
@@ -741,10 +813,9 @@ namespace SportStore
 
             Console.Clear();
             Console.WriteLine("Number:");
-            string ans = Console.ReadLine();
 
+            bool result = int.TryParse(Console.ReadLine(), out index);
             Console.Clear();
-            bool result = int.TryParse(ans, out index);
             if (result)
             {
                 eq = eqCollection.GetEquipmentByIndex(index - 1);
@@ -758,14 +829,86 @@ namespace SportStore
             }
             else
             {
-                if (RepeatEnter(1))
+                if (RepeatEnter(TypeError.IncorrectInputValue))
                     ShowConcreteEquipment();
             }
+        }
+
+        /// <summary>Choicing a type of sorting</summary>
+        private void ShowSortingEquipmentsByPrice()
+        {
+            Console.Clear();
+            Console.WriteLine("You can sort equipments by price. Try it!");
+            Console.WriteLine();
+
+            if (eqCollection.Length == 0)
+            {
+                Console.WriteLine("The shop is empty!");
+            }
+            else if (eqCollection.Length == 1)
+            {
+                Console.WriteLine("Only one equipment is situated in the shop! You can see this one:");
+                Console.WriteLine();
+                Console.WriteLine(eqCollection.GetEquipmentByIndex(0).GetInfo());
+            }
+            else
+            {
+                Console.WriteLine("Type of sorting: 0 - Ascending, 1 - Descending");
+                SortEquipment(Console.ReadLine());
+            }
+
+            BackToMainMenu();
+        }
+
+        /// <summary>Sorting equipments</summary>
+        /// <param name="typeSort">0 - ascending, 1 - descending</param>
+        private void SortEquipment(string typeSort = "0")
+        {
+            if(typeSort != "0" && typeSort != "1")
+            {
+                Console.WriteLine("Incorrect command!");
+                return;
+            }
+            
+            BaseEquipment temp;
+            if (typeSort == "0") // - ascending
+            {
+                for (int i = 0; i < eqCollection.Length - 1; i++)
+                {
+                    for (int j = 0; j < eqCollection.Length - 1; j++)
+                    {
+                        if (eqCollection.GetEquipmentByIndex(j).Price > eqCollection.GetEquipmentByIndex(j + 1).Price)
+                        {
+                            temp = eqCollection.GetEquipmentByIndex(j);
+                            eqCollection.SetElementByIndex(j, eqCollection.GetEquipmentByIndex(j + 1));
+                            eqCollection.SetElementByIndex(j + 1, temp);
+                        }
+                    }
+                }
+            }
+            else // - descending
+            {
+                for (int i = 0; i < eqCollection.Length - 1; i++)
+                {
+                    for (int j = 0; j < eqCollection.Length - 1; j++)
+                    {
+                        if (eqCollection.GetEquipmentByIndex(j).Price < eqCollection.GetEquipmentByIndex(j + 1).Price)
+                        {
+                            temp = eqCollection.GetEquipmentByIndex(j);
+                            eqCollection.SetElementByIndex(j, eqCollection.GetEquipmentByIndex(j + 1));
+                            eqCollection.SetElementByIndex(j + 1, temp);
+                        }
+                    }
+                }
+            }
+
+            Console.WriteLine("The sorted list of the equipments:");
+            ShowWholeListEquipments();
         }
         #endregion
 
 
-
+        /// <summary>Moving to the Main menu</summary>
         private void BackToMainMenu()
         {
             Console.WriteLine("\nBack to main menu - 0, Exit - press any key");
@@ -779,14 +922,15 @@ namespace SportStore
             }
         }
 
-        private bool RepeatEnter(int typeError = 0)
+        /// <summary>Ask user about repeat the last input</summary>
+        private bool RepeatEnter(TypeError typeError = TypeError.IncorrectCommand)
         {
             bool result = false;
 
             Console.Clear();
             menuBuilder.Clear();
 
-            if (typeError == 0)
+            if (typeError == TypeError.IncorrectCommand)
                 menuBuilder.Append("Unknown command! ");
             else
                 menuBuilder.Append("Incorrect input! ");
