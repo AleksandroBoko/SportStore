@@ -612,9 +612,10 @@ namespace SportStore
             menuBuilder.AppendLine("0 - All equipment");
             menuBuilder.AppendLine("1 - Concrete type of equipment");
             menuBuilder.AppendLine("2 - Concrete equipment");
-            menuBuilder.AppendLine("3 - Sort equipments and view");  
+            menuBuilder.AppendLine("3 - Sort equipments and view");
+            menuBuilder.AppendLine("4 - Count of equipment");
             menuBuilder.AppendLine("-------------");
-            menuBuilder.AppendLine("4 - Main menu");
+            menuBuilder.AppendLine("5 - Main menu");
             Console.WriteLine(menuBuilder);
 
             Console.WriteLine("Enter:");
@@ -624,8 +625,9 @@ namespace SportStore
                 case "0": ShowAllEquipment(); break;
                 case "1": ShowConcreteType(); break;
                 case "2": ShowConcreteEquipment(); break;
-                case "3": ShowSortingEquipmentsByPrice(); break; 
-                case "4": ShowMainManu(); break;
+                case "3": ShowSortingEquipmentsByPrice(); break;
+                case "4": ShowCountOfEquipment(); break;
+                case "5": ShowMainManu(); break;
                 default:
                     {
                         if (RepeatEnter())
@@ -864,12 +866,12 @@ namespace SportStore
         /// <param name="typeSort">0 - ascending, 1 - descending</param>
         private void SortEquipment(string typeSort = "0")
         {
-            if(typeSort != "0" && typeSort != "1")
+            if (typeSort != "0" && typeSort != "1")
             {
                 Console.WriteLine("Incorrect command!");
                 return;
             }
-            
+
             BaseEquipment temp;
             if (typeSort == "0") // - ascending
             {
@@ -904,6 +906,72 @@ namespace SportStore
 
             Console.WriteLine("The sorted list of the equipments:");
             ShowWholeListEquipments();
+        }
+
+        private void ShowCountOfEquipment()
+        {
+            Console.Clear();
+            menuBuilder.Clear();
+            menuBuilder.AppendLine("You can choose type of viewing information:");
+            menuBuilder.AppendLine("0 - Total information");
+            menuBuilder.AppendLine("1 - Detail information by the main types");
+            Console.WriteLine(menuBuilder);
+
+            Console.WriteLine("Enter:");
+            string ans = Console.ReadLine();
+            Console.Clear();
+            if (ans == "0" || ans == "1")
+            {
+                ShowCountOfEquipmentByParametr(ans);
+            }
+            else
+            {
+                if (RepeatEnter())
+                    ShowCountOfEquipment();
+            }
+        }
+
+        private void ShowCountOfEquipmentByParametr(string typeView = "0")
+        {
+            if (typeView == "0")
+            {
+                Console.WriteLine("Total number of equipment is {0}", eqCollection.Length);
+            }
+            else if (typeView == "1")
+            {
+                int countBalls, countBikes, countBoats;
+                GetCountEquipmentsByBaseType(out countBalls, out countBikes, out countBoats);
+                menuBuilder.Clear();
+                menuBuilder.Append("Count of balls: ");
+                menuBuilder.AppendLine(countBalls.ToString());
+                menuBuilder.Append("Count of bikes: ");
+                menuBuilder.AppendLine(countBikes.ToString());
+                menuBuilder.Append("Count of boats: ");
+                menuBuilder.AppendLine(countBoats.ToString());
+                Console.WriteLine("Information by types:");
+                Console.WriteLine(menuBuilder);
+            }
+            else
+            {
+                Console.WriteLine("Incorrect command!");
+            }
+
+            BackToMainMenu();
+        }
+
+        private void GetCountEquipmentsByBaseType(out int countBalls, out int countBikes, out int countBoats)
+        {
+            countBalls = countBikes = countBoats = 0;
+
+            for (int i = 0; i < eqCollection.Length; i++)
+            {
+                if (eqCollection.GetEquipmentByIndex(i) is BaseBall)
+                    countBalls++;
+                else if (eqCollection.GetEquipmentByIndex(i) is BaseBike)
+                    countBikes++;
+                else if (eqCollection.GetEquipmentByIndex(i) is BaseBoat)
+                    countBoats++;
+            }
         }
         #endregion
 
