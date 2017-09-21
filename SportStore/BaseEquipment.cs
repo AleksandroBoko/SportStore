@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace SportStore
 {
+
     class BaseEquipment
     {
-        
         public string Name { get; protected set; }
         public float Price { get; protected set; }
+        public float RentPrice { get { return Price * 0.01f; } }
 
         public BaseEquipment(string name, float price)
         {
@@ -20,7 +21,7 @@ namespace SportStore
 
         public virtual string GetInfo()
         {
-            return $"Name:{Name}; Price:{Price}; ";
+            return $"Name:{Name}; Price:{Price}; Rent price:{RentPrice}; ";
         } 
 
         public string GeTypeInfo()

@@ -609,13 +609,14 @@ namespace SportStore
             Console.Clear();
             menuBuilder.Clear();
             menuBuilder.AppendLine("You can choose:");
-            menuBuilder.AppendLine("0 - All equipment");
+            menuBuilder.AppendLine("0 - All equipments");
             menuBuilder.AppendLine("1 - Concrete type of equipment");
             menuBuilder.AppendLine("2 - Concrete equipment");
             menuBuilder.AppendLine("3 - Sort equipments and view");
-            menuBuilder.AppendLine("4 - Count of equipment");
+            menuBuilder.AppendLine("4 - Count of the equipments");
+            menuBuilder.AppendLine("5 - Price of the equipments");
             menuBuilder.AppendLine("-------------");
-            menuBuilder.AppendLine("5 - Main menu");
+            menuBuilder.AppendLine("6 - Main menu");
             Console.WriteLine(menuBuilder);
 
             Console.WriteLine("Enter:");
@@ -627,7 +628,8 @@ namespace SportStore
                 case "2": ShowConcreteEquipment(); break;
                 case "3": ShowSortingEquipmentsByPrice(); break;
                 case "4": ShowCountOfEquipment(); break;
-                case "5": ShowMainManu(); break;
+                case "5": ShowPriceOfEquipment(); break;
+                case "6": ShowMainManu(); break;
                 default:
                     {
                         if (RepeatEnter())
@@ -836,6 +838,7 @@ namespace SportStore
             }
         }
 
+        #region Sorting equipments and view result
         /// <summary>Choicing a type of sorting</summary>
         private void ShowSortingEquipmentsByPrice()
         {
@@ -907,7 +910,10 @@ namespace SportStore
             Console.WriteLine("The sorted list of the equipments:");
             ShowWholeListEquipments();
         }
+        #endregion
 
+        #region Viewing count of equipment
+        /// <summary>Showing menu of the type viewing of count equipments</summary>
         private void ShowCountOfEquipment()
         {
             Console.Clear();
@@ -931,6 +937,7 @@ namespace SportStore
             }
         }
 
+        /// <summary>Showing count of the equipments</summary>
         private void ShowCountOfEquipmentByParametr(string typeView = "0")
         {
             if (typeView == "0")
@@ -940,7 +947,7 @@ namespace SportStore
             else if (typeView == "1")
             {
                 int countBalls, countBikes, countBoats;
-                GetCountEquipmentsByBaseType(out countBalls, out countBikes, out countBoats);
+                CalculateCountEquipmentsByBaseType(out countBalls, out countBikes, out countBoats);
                 menuBuilder.Clear();
                 menuBuilder.Append("Count of balls: ");
                 menuBuilder.AppendLine(countBalls.ToString());
@@ -959,7 +966,8 @@ namespace SportStore
             BackToMainMenu();
         }
 
-        private void GetCountEquipmentsByBaseType(out int countBalls, out int countBikes, out int countBoats)
+        /// <summary>Calculate count of equipments by base equipment type</summary>
+        private void CalculateCountEquipmentsByBaseType(out int countBalls, out int countBikes, out int countBoats)
         {
             countBalls = countBikes = countBoats = 0;
 
@@ -973,6 +981,83 @@ namespace SportStore
                     countBoats++;
             }
         }
+        #endregion
+
+        #region Showing Price
+        /// <summary>Showing menu of the type viewing of price equipments</summary>
+        private void ShowPriceOfEquipment()
+        {
+            Console.Clear();
+            menuBuilder.Clear();
+            menuBuilder.AppendLine("You can choose type of viewing information:");
+            menuBuilder.AppendLine("0 - Total Price");
+            menuBuilder.AppendLine("1 - Detail information by the main types");
+            Console.WriteLine(menuBuilder);
+
+            Console.WriteLine("Enter:");
+            string ans = Console.ReadLine();
+            Console.Clear();
+            if (ans == "0" || ans == "1")
+            {
+                ShowPriceOfEquipmentByParametr(ans);
+            }
+            else
+            {
+                if (RepeatEnter())
+                    ShowPriceOfEquipment();
+            }
+        }
+
+        /// <summary>Showing price of the equipments</summary>
+        private void ShowPriceOfEquipmentByParametr(string typeView = "0")
+        {
+            if (typeView != "0" && typeView != "1")
+            {
+                Console.WriteLine("Incorrect command!");
+            }
+            else
+            {
+
+                float priceBalls, priceBikes, priceBoats;
+                CalculatePriceEquipmentsByBaseType(out priceBalls, out priceBikes, out priceBoats);
+
+                if (typeView == "0")
+                {
+                    Console.WriteLine("Total price of equipment is {0}", priceBalls + priceBikes + priceBoats);
+                }
+                else if (typeView == "1")
+                {
+                    menuBuilder.Clear();
+                    menuBuilder.Append("Total price by balls: ");
+                    menuBuilder.AppendLine(priceBalls.ToString());
+                    menuBuilder.Append("Total price by bikes: ");
+                    menuBuilder.AppendLine(priceBikes.ToString());
+                    menuBuilder.Append("Total price by boats: ");
+                    menuBuilder.AppendLine(priceBoats.ToString());
+                    Console.WriteLine("Information by types:");
+                    Console.WriteLine(menuBuilder);
+                }
+            }
+
+            BackToMainMenu();
+        }
+
+        /// <summary>Calculate price of equipments by base equipment type</summary>
+        private void CalculatePriceEquipmentsByBaseType(out float priceBalls, out float priceBikes, out float priceBoats)
+        {
+            priceBalls = priceBikes = priceBoats = 0;
+
+            for (int i = 0; i < eqCollection.Length; i++)
+            {
+                if (eqCollection.GetEquipmentByIndex(i) is BaseBall)
+                    priceBalls += eqCollection.GetEquipmentByIndex(i).Price;
+                else if (eqCollection.GetEquipmentByIndex(i) is BaseBike)
+                    priceBikes += eqCollection.GetEquipmentByIndex(i).Price; 
+                else if (eqCollection.GetEquipmentByIndex(i) is BaseBoat)
+                    priceBoats += eqCollection.GetEquipmentByIndex(i).Price; 
+            }
+        }
+        #endregion
         #endregion
 
 
